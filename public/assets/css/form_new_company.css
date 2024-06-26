@@ -1,0 +1,10 @@
+/* New Company */
+#select_AGR, #select_TRANS, #select_TI, #select_COM{
+    display: none;
+}
+#btn_guardar_ubicacion{
+    display: none;
+}
+#result_ok, #result_error{
+    display: none;
+}
