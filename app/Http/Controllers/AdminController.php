@@ -17,18 +17,7 @@ use App\Models\FruitVegetable;
 use App\Models\ProductosAgricultura;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
-
-class UbicacionACoordenadas{
-    public $user_id;
-    public $longitud;
-    public $latitud;
-
-    public function __construct($user_id, $longitud, $latitud){
-        $this->user_id = $user_id;
-        $this->longitud = $longitud;
-        $this->latitud = $latitud;
-    }
-}
+use App\Clases\CUbicacionACoordenadas;
 
 class AdminController extends Controller
 {
@@ -38,7 +27,8 @@ class AdminController extends Controller
     }
 
     public function verMapa(){
-        return view('admin.mapa');
+        $provincias = Ciudad::orderBy('provincia', 'asc')->get();
+        return view('admin.mapa', compact('provincias'));
     }
 
     public function verListaEmpresas(){
@@ -259,7 +249,7 @@ class AdminController extends Controller
                     $coordinates = $content->features[0]->geometry->coordinates;
                     $longitude = $coordinates[0];
                     $latitude = $coordinates[1];
-                    array_push($ubicaciones, new UbicacionACoordenadas($empresa->user_id, $longitude, $latitude));
+                    array_push($ubicaciones, new CUbicacionACoordenadas($empresa->user_id, $longitude, $latitude));
                 }
             }
         }

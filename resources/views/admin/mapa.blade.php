@@ -3,6 +3,12 @@
 @section('content')
 <div class="row justify-content-center">
     <div class="d-flex justify-content-start">
+        <select id="select-provincia" class="form-select m-2" aria-label="Default select example">
+            <option value="-1" selected>Toda Espa&ntilde;a</option>
+            @foreach($provincias as $provincia)
+                <option value="{{ $provincia->id }}">{{ $provincia->texto }}</option>
+            @endforeach
+        </select>
         <button id="btn-todo" class="btn btn-outline-primary m-2">TODO</button>
         <button id="btn-tiendas" class="btn btn-outline-primary m-2">TIENDAS</button>
         <button id="btn-agricultores" class="btn btn-outline-primary m-2">AGRICULTORES</button>
@@ -20,7 +26,9 @@
 <script>
     var accessToken = '{{ env('MAPBOX_API_KEY') }}';
     var icon_tienda_url = '{{ asset('assets/mapa/tienda.png') }}';
-    var url_todos = '{{ route("admin.ver.mapa.todo")}}';
+    var select_provincia_dato = $('#select-provincia').val();
+    var url_base = '/admin/ver-mapa/todos/';
+    var url_todos = url_base + select_provincia_dato;
 </script>
 <script src="{{ asset('assets/js/mapa_uso_general.js') }}"></script>
 @endsection

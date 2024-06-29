@@ -25,7 +25,7 @@ Route::group(['prefix' => 'admin'], function() {
     Route::post('/new-company', [AdminController::class, 'newCompany'])->name('admin.nueva.empresa');
     Route::post('/company-ubicacion', [AdminController::class, 'guardaUbicacion'])->name('admin.guardar.ubicacion');
     Route::get('/ver-mapa', [AdminController::class, 'verMapa'])->name('admin.ver.mapa');
-    Route::get('/ver-mapa/todos', [MapaController::class, 'getVerMapaTodo'])->name('admin.ver.mapa.todo');
+    Route::get('/ver-mapa/todos/{id}', [MapaController::class, 'getVerMapaTodo'])->name('admin.ver.mapa.todo');
     Route::get('/producto', [AdminController::class, 'showFormNewProduct'])->name('admin.producto');
     Route::get('/producto/{id}', [AdminController::class, 'verProducto'])->name('admin.ver.producto');
     Route::get('/lista/productos', [AdminController::class, 'verListaProductos'])->name('admin.lista.ver.producto');

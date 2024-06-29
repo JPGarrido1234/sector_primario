@@ -3,7 +3,8 @@ $(document).ready(function () {
     "use strict";
 
 
-    mapboxgl.accessToken = accessToken;
+    mapboxgl.accessToken = accessToken
+
     var map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
@@ -11,49 +12,57 @@ $(document).ready(function () {
         zoom: 10
     });
 
-    $.ajax({
-        url: url_todos, // URL a la que se realiza la solicitud
-        type: "GET", // Tipo de solicitud
-        success: function(response) {
-            if(response){
-                var data = JSON.parse(response.data);
-                var posiciones = [
-                    { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-3.7037902, 40.4167754] } },
-                ];
-                console.log("Datos recibidos:", response);
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error("Error en la solicitud:", error);
-        }
+    $('#select-provincia').change(function() {
+        select_provincia_dato = $(this).val();
+        url_todos = url_base + select_provincia_dato;
     });
 
-    map.on('load', () => {
-        map.loadImage(
-            icon_tienda_url,
-            (error, image) => {
-                if (error) throw error;
-
-                map.addImage('tienda', image);
-                map.addSource('point', {
-                    'type': 'geojson',
-                    'data': {
-                        'type': 'FeatureCollection',
-                        'features': posiciones
-                    }
-                });
-
-                map.addLayer({
-                    'id': 'points',
-                    'type': 'symbol',
-                    'source': 'point', // reference the data source
-                    'layout': {
-                        'icon-image': 'tienda', // reference the image
-                        'icon-size': 0.5
-                    }
-                });
+    $('#btn-todo').on('click', function() {
+        console.log(url_todos);
+        $.ajax({
+            url: url_todos, // URL a la que se realiza la solicitud
+            type: "GET", // Tipo de solicitud
+            success: function(response) {
+                if(response){
+                    var data = response;
+                    var posiciones = [
+                        { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-3.7037902, 40.4167754] } },
+                    ];
+                    console.log("Datos recibidos:", response);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error en la solicitud:", error);
             }
-        );
+        });
+
+        map.on('load', () => {
+            map.loadImage(
+                icon_tienda_url,
+                (error, image) => {
+                    if (error) throw error;
+
+                    map.addImage('tienda', image);
+                    map.addSource('point', {
+                        'type': 'geojson',
+                        'data': {
+                            'type': 'FeatureCollection',
+                            'features': posiciones
+                        }
+                    });
+
+                    map.addLayer({
+                        'id': 'points',
+                        'type': 'symbol',
+                        'source': 'point', // reference the data source
+                        'layout': {
+                            'icon-image': 'tienda', // reference the image
+                            'icon-size': 0.5
+                        }
+                    });
+                }
+            );
+        });
     });
     /*
 
